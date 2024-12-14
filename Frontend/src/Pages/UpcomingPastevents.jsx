@@ -2,54 +2,50 @@ import React, { useState, useEffect } from "react";
 import EventCard from "../Components/EventCard";
 import SearchFilter from "../Components/SearchFilter";
 import eventData from "./Data/eventData";
+import { FaPlus } from "react-icons/fa"; 
+import AddEvent from "../Components/AddEvent";
+import AdEventCard from "../Components/AdminEventPage";
 
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [searchParams, setSearchParams] = useState({});
   const [filteredEvents, setFilteredEvents] = useState(eventData);
+  const [user, setUser] = useState(null); // Replace with actual user auth logic
 
   useEffect(() => {
     const filterEvents = () => {
       let filtered = eventData;
 
-      // Search term filter
       if (searchParams.searchTerm) {
         filtered = filtered.filter((event) =>
           event.title.toLowerCase().includes(searchParams.searchTerm.toLowerCase())
         );
       }
 
-      // Institute/Department filter
       if (searchParams["Institute / Department / Centre"]) {
         filtered = filtered.filter((event) =>
-          event.institution
-            .toLowerCase()
-            .includes(searchParams["Institute / Department / Centre"].toLowerCase())
+          event.institution.toLowerCase().includes(searchParams["Institute / Department / Centre"].toLowerCase())
         );
       }
 
-      // Location filter
       if (searchParams["By Location"]) {
         filtered = filtered.filter((event) =>
           event.location.toLowerCase().includes(searchParams["By Location"].toLowerCase())
         );
       }
 
-      // Event Type filter
       if (searchParams["By Event Type"]) {
         filtered = filtered.filter((event) =>
           event.eventType.toLowerCase().includes(searchParams["By Event Type"].toLowerCase())
         );
       }
 
-      // Audience Type filter
       if (searchParams["By Audience Type"]) {
         filtered = filtered.filter((event) =>
           event.audienceType.toLowerCase().includes(searchParams["By Audience Type"].toLowerCase())
         );
       }
 
-      // Date filters (fromDate and toDate)
       if (searchParams.fromDate) {
         const fromDate = new Date(searchParams.fromDate);
         filtered = filtered.filter((event) => new Date(event.startDate) >= fromDate);
@@ -93,6 +89,15 @@ const EventsPage = () => {
         </div>
       </div>
 
+      {user?.role === "author" && (
+        <button
+          className="fixed bottom-10 right-10 bg-orange-500 text-white p-4 rounded-full shadow-lg hover:bg-orange-600 transition-all"
+          onClick={() => AddEvent }
+        >
+          <FaPlus size={30} />
+        </button>
+      )}
+
       <div className="flex w-full max-w-full gap-6">
         <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/4 xl:w-1/5 mb-6">
           <SearchFilter searchParams={searchParams} setSearchParams={setSearchParams} />
@@ -100,7 +105,7 @@ const EventsPage = () => {
 
         <div className="w-full sm:w-2/3 md:w-3/4 lg:w-3/4 xl:w-4/5">
           <div className="flex flex-col gap-6">
-            <EventCard events={filteredEvents} />
+            <AdEventCard events={filteredEvents} />
           </div>
         </div>
       </div>
