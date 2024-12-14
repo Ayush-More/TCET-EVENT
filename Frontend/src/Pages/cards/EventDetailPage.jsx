@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom'; // To get the event ID from the URL
-import { eventData } from '../Data/eventData'; // Import the event data
+import eventData  from '../Data/eventData'; // Import the event data
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaUsers, FaUniversity, FaFlagCheckered } from 'react-icons/fa'; // Add more icons
 
 const EventDetailPage = () => {

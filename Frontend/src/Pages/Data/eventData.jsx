@@ -1,10 +1,9 @@
 // src/data/eventData.js
-
-export const eventData = [
+const  eventData = [
     {
       id: 1,
       title: 'Sojourn',
-      startDate: '16th March 2025',
+      startDate: '16th March 2024',
       endDate: '25th November 2024',
       time: '07:00 AM',
       eventType: 'Sports',
@@ -47,4 +46,5 @@ export const eventData = [
     },
  
   ];
+  export default eventData;
   

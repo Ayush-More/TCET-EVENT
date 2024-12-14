@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import eventIcon from '../../assets/3.jpg'; // Replace with event icon
 import eventImage from '../../assets/3.jpg'; // Replace with event image
-import { eventData } from '../Data/eventData'; // Import the event data
+import eventData  from '../Data/eventData'; // Import the event data
 
 const EventCard = () => {
   return (
