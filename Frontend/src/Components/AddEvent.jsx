@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaMapMarkerAlt,
   FaBuilding,
@@ -34,6 +34,17 @@ const AddEvent = () => {
     outcome: "",
     image: null,
   });
+
+  const [facultySuggestions, setFacultySuggestions] = useState([]);
+  const [assignedFaculty, setAssignedFaculty] = useState([]);
+
+  useEffect(() => {
+    // Fetch the faculty data from your backend API (replace with your actual API URL)
+    fetch("your-api-url/faculty-suggestions")
+      .then((response) => response.json())
+      .then((data) => setFacultySuggestions(data))
+      .catch((error) => console.error("Error fetching faculty data:", error));
+  }, []);
 
   const validate = () => {
     const newErrors = {};
@@ -110,6 +121,11 @@ const AddEvent = () => {
     }
   };
 
+  // Check if faculty is assigned
+  const getFacultyColor = (facultyName) => {
+    return assignedFaculty.includes(facultyName) ? "text-green-500" : "text-red-500";
+  };
+
   return (
     <div className="bg-orange-200 min-h-screen flex items-center justify-center">
       <div className="p-10 bg-orange-100 shadow-xl rounded-lg w-full max-w-7xl mx-auto border-4 border-black">
@@ -181,6 +197,27 @@ const AddEvent = () => {
               </div>
             </div>
           ))}
+
+          {/* Faculty Assignment Suggestions */}
+          <div className="col-span-3">
+            <label className="text-black font-medium text-lg mb-2">Assign Faculty</label>
+            <div className="flex flex-wrap gap-4">
+              {facultySuggestions.map((faculty, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setAssignedFaculty((prev) => [...prev, faculty])}
+                  className={`px-4 py-2 rounded-lg ${
+                    assignedFaculty.includes(faculty)
+                      ? "bg-green-500 text-white"
+                      : "bg-red-500 text-white"
+                  }`}
+                >
+                  {faculty}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Image Upload */}
           <div className="col-span-3 text-center">
