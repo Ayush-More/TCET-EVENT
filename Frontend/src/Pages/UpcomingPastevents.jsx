@@ -63,9 +63,8 @@ const EventsPage = () => {
 
   return (
     <div className="flex flex-col items-center mt-1 px-4 sm:px-6 lg:px-12 w-full min-h-screen bg-orange-100">
-      <h1 className="text-4xl font-semibold text-orange-600 mb-6 text-center">Events</h1>
-
-      <div className="flex w-full max-w-full border-b-4 border-gray-200 rounded-t-xl overflow-hidden mb-6">
+     
+      <div className="flex w-full max-w-full border-b-4 border-gray-200 rounded-t-xl overflow-hidden mb-2">
         <div
           className={`flex-1 text-center py-4 cursor-pointer transition-all duration-300 ease-in-out ${
             activeTab === "upcoming"
@@ -104,8 +103,8 @@ const EventsPage = () => {
         </div>
 
         <div className="w-full sm:w-2/3 md:w-3/4 lg:w-3/4 xl:w-4/5">
-          <div className="flex flex-col gap-6">
-            <AdEventCard events={filteredEvents} />
+          <div className="flex flex-col ">
+            <EventCard events={filteredEvents} />
           </div>
         </div>
       </div>

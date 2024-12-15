@@ -35,6 +35,38 @@ const AddEvent = () => {
     image: null,
   });
 
+  const validate = () => {
+    const newErrors = {};
+    if (!event.title) newErrors.title = "Event title is required.";
+    if (!event.startDate) newErrors.startDate = "Start date is required.";
+    if (!event.endDate) newErrors.endDate = "End date is required.";
+    if (new Date(event.endDate) < new Date(event.startDate)) {
+      newErrors.endDate = "End date must be after the start date.";
+    }
+    if (!event.location) newErrors.location = "Location is required.";
+    if (!event.institution) newErrors.institution = "Institution is required.";
+    if (!event.eventType) newErrors.eventType = "Event type is required.";
+    if (!event.audienceType) newErrors.audienceType = "Audience type is required.";
+    if (!event.activityHead) newErrors.activityHead = "Activity head is required.";
+    if (event.facultyAssigned.some((faculty) => !faculty)) {
+      newErrors.facultyAssigned = "Faculty assigned cannot be empty.";
+    }
+    if (event.nonTeachingStaff.some((staff) => !staff)) {
+      newErrors.nonTeachingStaff = "Non-teaching staff cannot be empty.";
+    }
+    if (!event.objective) newErrors.objective = "Objective is required.";
+    if (!event.outcome) newErrors.outcome = "Outcome is required.";
+    if (!event.image) newErrors.image = "Image is required.";
+
+    // Display alerts for errors
+    if (Object.keys(newErrors).length > 0) {
+      alert(Object.values(newErrors).join("\n"));
+      return false;
+    }
+    
+    return true;
+  };
+
   const handleChange = (e, fieldName, index) => {
     const { value } = e.target;
     const updatedField = [...event[fieldName]];
@@ -62,13 +94,26 @@ const AddEvent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Event added:", event);
+    if (validate()) {
+      console.log("Event added:", event);
+
+      fetch('your-api-url', {
+        method: 'POST',
+        body: JSON.stringify(event),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch((error) => console.error('Error:', error));
+    }
   };
 
   return (
-    <div className="bg-orange-200 min-h-screen flex items-center">
-      <div className="p-8 bg-orange-100 shadow-xl rounded-lg max-w-full w-full mx-auto border-4 border border-black">
-        <h2 className="text-5xl font-bold italic ml-10 text-center text-orange-600 mb-9">
+    <div className="bg-orange-200 min-h-screen flex items-center justify-center">
+      <div className="p-10 bg-orange-100 shadow-xl rounded-lg w-full max-w-7xl mx-auto border-4 border-black">
+        <h2 className="text-5xl font-bold italic text-center text-orange-600 mb-9">
           Add New Event
         </h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-6">
@@ -95,12 +140,12 @@ const AddEvent = () => {
                 value={event[field.name]}
                 onChange={(e) => handleChange(e, field.name, 0)}
                 placeholder={`Enter ${field.label.toLowerCase()}`}
-                className="w-full p-3 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full p-2 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
               />
             </div>
           ))}
-          
-          {/* Dynamic fields for faculty assigned, non-teaching staff, and organized by */}
+
+          {/* Faculty, Non-teaching Staff, and Organized By */}
           {["facultyAssigned", "nonTeachingStaff", "organizedBy"].map((field, index) => (
             <div key={index} className="col-span-3">
               <label className="flex items-center justify-start text-black font-medium text-lg mb-4">
@@ -115,7 +160,7 @@ const AddEvent = () => {
                       value={value}
                       onChange={(e) => handleChange(e, field, idx)}
                       placeholder={`Enter ${field === "facultyAssigned" ? "faculty" : field === "nonTeachingStaff" ? "non-teaching staff" : "organizer"}`}
-                      className="w-full p-3 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full p-2 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                     />
                     <button
                       type="button"
@@ -146,7 +191,7 @@ const AddEvent = () => {
               type="file"
               name="image"
               onChange={handleImageChange}
-              className="w-full p-3 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full p-2 border border-black rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
             {event.image && (
               <div className="relative mt-4 inline-block border rounded-lg">
