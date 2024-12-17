@@ -11,10 +11,9 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
   };
 
   return (
-    <div className="p-4 border-2 border-orange-300 rounded-xl bg-gray-50 shadow-md w-[280px] max-w-md mx-auto">
+    <div className="p-4 border-2 border-orange-300 rounded-xl bg-gray-50 shadow-md w-[320px] max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">REFINE YOUR SEARCH</h2>
 
-      
       <div className="mb-4">
         <label className="block mb-2 text-sm text-gray-700 flex items-center">
           <FaSearch className="mr-2 text-red-400 text-base" />
@@ -24,15 +23,13 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
           type="text"
           placeholder="Search..."
           name="searchTerm"
-          value={searchParams.searchTerm}
+          value={searchParams.searchTerm || ""}
           onChange={handleChange}
           className="w-full border border-gray-300 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
         />
       </div>
 
-      {/* Dropdowns */}
-      {[
-        { label: "Institute / Department / Centre", icon: <FaBuilding className="text-green-500 text-base" /> },
+      {[{ label: "Institute / Department / Centre", icon: <FaBuilding className="text-green-500 text-base" /> },
         { label: "By Location", icon: <FaMapMarkerAlt className="text-blue-500 text-base" /> },
         { label: "By Event Type", icon: <FaMusic className="text-purple-500 text-base" /> },
         { label: "By Audience Type", icon: <FaUsers className="text-orange-500 text-base" /> },
@@ -44,16 +41,16 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
           </label>
           <select
             name={label}
-            value={searchParams[label]}
+            value={searchParams[label] || ""}
             onChange={handleChange}
             className="w-full border border-gray-300 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
           >
-            <option>Select</option>
+            <option value="">Select</option>
+            {/* Add relevant options here */}
           </select>
         </div>
       ))}
 
-      {/* Date Pickers */}
       <div className="mb-4">
         <label className="block mb-2 text-sm text-gray-700 flex items-center">
           <FaCalendarAlt className="mr-2 text-yellow-500 text-base" />
@@ -62,7 +59,7 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
         <input
           type="date"
           name="fromDate"
-          value={searchParams.fromDate}
+          value={searchParams.fromDate || ""}
           onChange={handleChange}
           className="w-full border border-gray-300 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
         />
@@ -75,13 +72,12 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
         <input
           type="date"
           name="toDate"
-          value={searchParams.toDate}
+          value={searchParams.toDate || ""}
           onChange={handleChange}
           className="w-full border border-gray-300 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
         />
       </div>
 
-      {/* Clear Filters Button */}
       <button
         className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 text-sm"
         onClick={() => setSearchParams({})} // Reset filters
@@ -91,5 +87,6 @@ const SearchFilter = ({ searchParams, setSearchParams }) => {
     </div>
   );
 };
+
 
 export default SearchFilter;
